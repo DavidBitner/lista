@@ -10,11 +10,11 @@
   <body>
     <h1>Lista</h1>
     <div class="btns">
-      <a href="#" class="btn">ADICIONAR</a>
-      <a href="#" class="btn">EXCLUIR</a>
+      <a href="#" class="btn" id="adicionar">ADICIONAR</a>
+      <a href="#" class="btn" id="excluir">EXCLUIR</a>
     </div>
     <div class="container">
-      <table>
+      <table id="tabela">
         <tr>
           <th>ID</th>
           <th>Nome</th>
@@ -60,9 +60,9 @@
       </table>
     </div>
 
-    <div id="overlay">
-      <div class="popup">
-        <h2 class="titulo">Titulo</h2>
+    <div class="modal" id="modal-adicionar">
+      <div class="modal-content">
+        <h2 class="titulo">Adicionar item a lista</h2>
         <input type="text" name="nome" id="nome" placeholder="Nome" />
         <input type="text" name="tipo" id="tipo" placeholder="Tipo" />
         <input
@@ -71,8 +71,17 @@
           id="detalhes"
           placeholder="Detalhes"
         />
-        <a href="#" class="btn btn-sml">CANCELAR</a>
-        <a href="#" class="btn btn-sml">CONFIRMAR</a>
+        <a href="#" class="btn btn-sml" id="modal-adicionar-cancelar">CANCELAR</a>
+        <a href="#" class="btn btn-sml" id="modal-adicionar-confirmar">CONFIRMAR</a>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-excluir">
+      <div class="modal-content">
+        <h2 class="titulo">Excluir item da lista</h2>
+        <input type="text" name="id" id="id" placeholder="ID" />
+        <a href="#" class="btn btn-sml" id="modal-excluir-cancelar">CANCELAR</a>
+        <a href="#" class="btn btn-sml" id="modal-excluir-confirmar">CONFIRMAR</a>
       </div>
     </div>
 
