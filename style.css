@@ -128,3 +128,7 @@ tr:hover {
   z-index: 2;
   cursor: pointer;
 }
+
+#status {
+  visibility: hidden;
+}
