@@ -25,6 +25,7 @@ const modal_excluir_btn_cancelar = document.querySelector(
   "#modal-excluir-cancelar"
 );
 const modal_excluir_id = document.querySelector("#id");
+const modal_excluir_status = document.querySelector("#status");
 
 // Variáveis que irão ser usadas para a tabela em si
 const dados_tabela = [];
@@ -49,8 +50,16 @@ modal_adicionar_btn_cancelar.addEventListener("click", function () {
   mostrar_modal();
 });
 
+// Função para determinar status da label de confirmação
+function modal_status(visibility = "hidden", text = "none", color = "#61a824") {
+  modal_excluir_status.style.visibility = visibility;
+  modal_excluir_status.innerHTML = text;
+  modal_excluir_status.style.color = color;
+}
+
 // Botão que vai abrir modal que irá excluir item da lista
 btn_excluir.addEventListener("click", function () {
+  modal_status("hidden");
   mostrar_modal("block", 1);
 });
 
@@ -68,17 +77,9 @@ window.addEventListener("click", function (event) {
   }
 });
 
-// Botão do modal que vai adicionar os dados a tabela
-modal_adicionar_btn_confirmar.addEventListener("click", function () {
+// Função que vai remontar a tabela
+function show_tabela() {
   tabela_body.innerHTML = "";
-
-  dados_linha.id = Date.now();
-  dados_linha.nome = modal_adicionar_nome.value;
-  dados_linha.tipo = modal_adicionar_tipo.value;
-  dados_linha.detalhes = modal_adicionar_detalhes.value;
-  dados_linha.data = new Date().toLocaleDateString();
-
-  dados_tabela.push({ ...dados_linha });
 
   dados_tabela.forEach(function (thing) {
     let row = tabela_body.insertRow(-1);
@@ -94,5 +95,41 @@ modal_adicionar_btn_confirmar.addEventListener("click", function () {
     cell2.innerHTML = thing.tipo;
     cell3.innerHTML = thing.detalhes;
     cell4.innerHTML = thing.data;
+  });
+}
+
+// Botão do modal que vai adicionar os dados a tabela
+modal_adicionar_btn_confirmar.addEventListener("click", function () {
+  dados_linha.id = Date.now();
+  dados_linha.nome = modal_adicionar_nome.value;
+  dados_linha.tipo = modal_adicionar_tipo.value;
+  dados_linha.detalhes = modal_adicionar_detalhes.value;
+  dados_linha.data = new Date().toLocaleDateString();
+
+  dados_tabela.push({ ...dados_linha });
+
+  show_tabela();
+});
+
+// Botão do modal que vai excluir dados da tabela
+modal_excluir_btn_confirmar.addEventListener("click", function () {
+  let idi = modal_excluir_id.value;
+  dados_tabela.every((dict, index) => {
+    if (dict.id == idi) {
+      modal_status(
+        "visible",
+        `Posição ${index + 1} da lista removido. Nome "${dict.nome}", ID "${dict.id}"`
+      );
+      dados_tabela.splice(index, 1);
+      show_tabela();
+      return false;
+    } else {
+      modal_status(
+        "visible",
+        `ID "${dict.id}" não encontrado na lista`,
+        "#ff727e"
+      );
+      return true;
+    }
   });
 });
