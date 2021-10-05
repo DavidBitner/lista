@@ -28,8 +28,28 @@ const modal_excluir_id = document.querySelector("#id");
 const modal_excluir_status = document.querySelector("#status");
 
 // Variáveis que irão ser usadas para a tabela em si
-const dados_tabela = [];
+let dados_tabela = [];
 let dados_linha = {};
+
+// Função que vai armazenar dados do aplicativo em um storage local
+function set_local_storage() {
+  localStorage.setItem("storage", JSON.stringify(dados_tabela));
+}
+
+// Função que vai usar as informações depositadas no storage local
+(function get_local_storage() {
+  const data = JSON.parse(localStorage.getItem("storage"));
+
+  // Clausula de defesa para caso não hajam informações no local storage
+  if (!data) {
+    return;
+  }
+
+  // Adicionando as informações do local storage ao aplicativo
+  dados_tabela = data;
+
+  show_tabela();
+})();
 
 // Função para fechar modais
 function mostrar_modal(display = "none", option = 0) {
@@ -107,7 +127,7 @@ modal_adicionar_btn_confirmar.addEventListener("click", function () {
   dados_linha.data = new Date().toLocaleDateString();
 
   dados_tabela.push({ ...dados_linha });
-
+  set_local_storage();
   show_tabela();
 });
 
@@ -118,9 +138,12 @@ modal_excluir_btn_confirmar.addEventListener("click", function () {
     if (dict.id == idi) {
       modal_status(
         "visible",
-        `Posição ${index + 1} da lista removido. Nome "${dict.nome}", ID "${dict.id}"`
+        `Posição ${index + 1} da lista removido. Nome "${dict.nome}", ID "${
+          dict.id
+        }"`
       );
       dados_tabela.splice(index, 1);
+      set_local_storage();
       show_tabela();
       return false;
     } else {
